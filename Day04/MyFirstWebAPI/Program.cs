@@ -1,9 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using MyFirstWebAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle     // Day 5: Updated Student API in dev branch
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -54,6 +63,8 @@ app.MapGet("/student", () =>
 
     return student;
 });
+
+app.MapControllers();
 
 app.Run();
 
